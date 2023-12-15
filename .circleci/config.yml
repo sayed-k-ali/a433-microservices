@@ -33,6 +33,7 @@ jobs:
       - setup_remote_docker
       - run:
           command: |
+            ls -ltra
             sh -c ./build_push_image_karsajobs.sh
 
 workflows:
