@@ -32,9 +32,14 @@ jobs:
       - checkout
       - setup_remote_docker
       - run:
-          command: |
-            ls -ltra
-            sh -c ./build_push_image_karsajobs.sh
+          name: Build docker image
+          command: docker build -t ghcr.io/sayed-k-ali/karsajobs:latest .
+      - run:
+          name: Login to container registry
+          command: docker login ghcr.io -u sayed-k-ali -p ${GHCR_TOKEN}
+      - run:
+          name: Push docker image to container registry
+          command: docker push ghcr.io/sayed-k-ali/karsajobs:latest
 
 workflows:
   ci:
