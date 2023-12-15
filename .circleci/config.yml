@@ -12,12 +12,11 @@ jobs:
       - setup_remote_docker
       - run:
           command: |
-            ls -ltra
             docker run --rm --interactive hadolint/hadolint < Dockerfile
   test-app:
     executor: 
       name: go/default
-      tag: '1.15.0'
+      tag: '1.15'
     steps:
       - checkout
       - go/load-cache
