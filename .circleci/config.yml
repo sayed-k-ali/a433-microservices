@@ -10,6 +10,7 @@ jobs:
     steps:
       - run:
           command: |
+            ls -ltra
             docker run --rm --interactive hadolint/hadolint < Dockerfile
   test-app:
     executor: 
