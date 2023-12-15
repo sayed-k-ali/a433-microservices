@@ -1,0 +1,45 @@
+version: 2.1
+
+orbs:
+  go: circleci/go@1.7.3
+
+jobs:
+  lint-dockerfile:
+    executor:
+      name: docker
+      tag: 'stable'
+    steps:
+      - run:
+          command: |
+            docker run --rm --interactive hadolint/hadolint < Dockerfile
+  test-app:
+    executor: 
+      name: go/default
+      tag: '1.15.0'
+    steps:
+      - checkout
+      - go/load-cache
+      - go/mod-download
+      - go/save-cache
+      - run:
+          command: |
+            go test -v -short --count=1 $(go list ./...)
+  build-app-karsajobs:
+    machine:
+      image: ubuntu-2004:202010-01 
+    steps:
+      - run:
+          command: |
+            sh -c ./build_push_image_karsajobs.sh
+
+workflows:
+  ci:
+    jobs:
+      - lint-dockerfile
+      - test-app:
+          requires:
+            - lint-dockerfile
+      - build-app-karsajobs:
+          requires:
+            - test-app
+
