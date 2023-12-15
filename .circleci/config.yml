@@ -5,9 +5,8 @@ orbs:
 
 jobs:
   lint-dockerfile:
-    executor:
-      name: docker
-      tag: 'stable'
+    docker:
+      - image: docker:stable
     steps:
       - run:
           command: |
