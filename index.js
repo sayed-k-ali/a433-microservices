@@ -8,19 +8,20 @@ app.use(bp.json());
 
 const amqp = require("amqplib");
 const amqpServer = process.env.AMQP_URL;
-var channel, connection;
+var channel = {}, connection;
 
 connectToQueue();
 
 async function connectToQueue() {
-    connection = await amqp.connect(amqpServer);
-    channel = await connection.createChannel();
     try {
+        connection = await amqp.connect(amqpServer);
+        channel = await connection.createChannel();
         const queue = "order";
         await channel.assertQueue(queue);
         console.log("Connected to the queue!")
     } catch (ex) {
-        console.error(ex);
+        console.error("Some error happen", ex);
+        process.exit(1);
     }
 }
 
