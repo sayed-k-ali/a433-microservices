@@ -23,6 +23,7 @@ async function connectToQueue() {
         });
     } catch (ex) {
         console.error(ex);
+        process.exit(1)
     }
 }
 
